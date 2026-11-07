@@ -1,0 +1,33 @@
+// Halaman Pemesanan Cerdas & Jadwal
+function Pemesanan({ c }) {
+  const [f, setF] = useState({ res: c.praPilih || "r1", date: isoTanggal(hariIni), start: 9, dur: 1, keperluan: "" });
+  const [galat, aturGalat] = useState("");
+  const [sinkron, aturSinkron] = useState(false);
+  const ubah = (k, v) => setF((p) => ({ ...p, [k]: v }));
+  const cols = Array.from({ length: 7 }, (_, i) => tambahHari(hariSenin(urai(f.date)), i));
+  const cariPesanan = (date, h) => c.daftarPesanan.find((b) => b.res === f.res && b.date === date && h >= b.start && h < b.start + b.dur);
+  const kirimForm = () => {
+    aturGalat("");
+    if (f.start + f.dur > 17) return aturGalat("Pemesanan harus selesai paling lambat pukul 17.00.");
+    if (waktuSlot(f.date, f.start) < c.sekarang) return aturGalat("Waktu tersebut sudah lewat. Pilih slot berikutnya.");
+    if (!f.keperluan.trim()) return aturGalat("Isi keperluan penggunaan.");
+    for (let h = f.start; h < f.start + f.dur; h++) if (cariPesanan(f.date, h)) return aturGalat("Slot bertabrakan dengan pemesanan lain.");
+    aturSinkron(true);
+    setTimeout(() => {
+      c.simpanPemesanan({ res: f.res, date: f.date, start: f.start, dur: f.dur, keperluan: f.keperluan });
+      aturSinkron(false);
+      ubah("keperluan", "");
+    }, 900);
+  };
+  const pilih = React.createElement("select", { "aria-label": "Pilihan alat atau ruang", className: kelasInput, value: f.res, onChange: (e) => ubah("res", e.target.value) }, React.createElement("optgroup", { label: "Ruangan" }, RUANGAN.map((r) => React.createElement("option", { key: r.id, value: r.id }, r.name))), React.createElement("optgroup", { label: "Alat" }, ALAT.filter((e) => e.st !== "Pemeliharaan").map((e) => React.createElement("option", { key: e.id, value: e.id }, e.name))));
+  return React.createElement("div", null, React.createElement(Judul, null, "Pemesanan Cerdas & Jadwal"), React.createElement("div", { className: "grid lg:grid-cols-3 gap-4" }, React.createElement(Kartu, { className: "lg:col-span-2 p-4 overflow-x-auto" }, React.createElement("div", { className: "flex flex-wrap items-center gap-2 mb-3 min-w-[480px]" }, React.createElement("div", { className: "w-60" }, pilih), React.createElement("div", { className: "flex items-center gap-1" }, React.createElement("button", { "aria-label": "Minggu sebelumnya", onClick: () => ubah("date", isoTanggal(tambahHari(urai(f.date), -7))), className: "p-2 rounded-lg border border-slate-200" }, React.createElement(IkonKiri, null)), React.createElement("input", { type: "date", "aria-label": "Tanggal", min: isoTanggal(hariIni), className: kelasInput + " !w-auto", value: f.date, onChange: (e) => e.target.value && ubah("date", e.target.value) }), React.createElement("button", { "aria-label": "Minggu berikutnya", onClick: () => ubah("date", isoTanggal(tambahHari(urai(f.date), 7))), className: "p-2 rounded-lg border border-slate-200" }, React.createElement(IkonKanan, null))), React.createElement(Tombol, { className: "ml-auto", onClick: c.sinkronSemua }, "Sinkronisasi ke Google Kalender")), React.createElement("div", { className: "grid min-w-[480px]", style: { gridTemplateColumns: "48px repeat(7,1fr)" } }, React.createElement("div", null), cols.map((d, i) => React.createElement("div", { key: i, className: `text-center text-xs pb-1 ${isoTanggal(d) === isoTanggal(hariIni) ? "text-blue-600 font-bold" : "text-slate-500"}` }, d.toLocaleDateString("id-ID", { weekday: "short" }), React.createElement("div", { className: "text-sm font-semibold" }, d.getDate()))), JAM.map((h) => React.createElement(React.Fragment, { key: h }, React.createElement("div", { className: "text-xs text-slate-500 text-right pr-2 pt-1 border-t border-slate-200" }, nol(h), ":00"), cols.map((d, i) => {
+    const dt = isoTanggal(d);
+    const b = cariPesanan(dt, h);
+    const lampau = waktuSlot(dt, h) < c.sekarang;
+    const terpilih = !b && f.date === dt && h >= f.start && h < f.start + f.dur;
+    return React.createElement("button", { key: i, disabled: !!b || lampau, onClick: () => {
+      ubah("date", dt);
+      ubah("start", h);
+    }, "aria-label": `${dt} pukul ${h}:00`, className: `h-9 border-t border-l border-slate-200 text-[11px] ${b ? b.milik ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-600" : terpilih ? "bg-blue-100 ring-1 ring-inset ring-blue-600" : lampau ? "bg-slate-50 cursor-not-allowed" : "bg-white hover:bg-blue-50"}` }, b ? b.milik ? "Saya" : "Dipakai" : "");
+  })))), React.createElement("div", { className: "flex gap-4 text-xs text-slate-600 mt-3" }, React.createElement("span", null, React.createElement("i", { className: "inline-block w-3 h-3 border border-slate-300 bg-white mr-1 align-middle" }), "Tersedia"), React.createElement("span", null, React.createElement("i", { className: "inline-block w-3 h-3 bg-blue-600 mr-1 align-middle" }), "Peminjaman saya"), React.createElement("span", null, React.createElement("i", { className: "inline-block w-3 h-3 bg-slate-200 mr-1 align-middle" }), "Dipakai orang lain"))), React.createElement(Kartu, { className: "p-4 self-start" }, React.createElement("h2", { className: "font-semibold mb-3" }, "Panel Peminjaman"), React.createElement(Bidang, { label: "Pilihan Alat / Ruang" }, pilih), React.createElement("div", { className: "grid grid-cols-2 gap-3" }, React.createElement(Bidang, { label: "Mulai" }, React.createElement("select", { className: kelasInput, value: f.start, onChange: (e) => ubah("start", +e.target.value) }, JAM.map((h) => React.createElement("option", { key: h, value: h }, nol(h), ":00")))), React.createElement(Bidang, { label: "Durasi (maks. 2 jam)" }, React.createElement("select", { className: kelasInput, value: f.dur, onChange: (e) => ubah("dur", +e.target.value) }, React.createElement("option", { value: 1 }, "1 jam"), React.createElement("option", { value: 2 }, "2 jam")))), React.createElement("p", { className: "text-xs text-slate-500 -mt-1 mb-3" }, formatTanggal(urai(f.date)), ", ", nol(f.start), ":00–", nol(f.start + f.dur), ":00"), React.createElement(Bidang, { label: "Keperluan" }, React.createElement("textarea", { rows: 3, className: kelasInput, value: f.keperluan, onChange: (e) => ubah("keperluan", e.target.value), placeholder: "Contoh: praktikum pengukuran sinyal" })), galat && React.createElement("p", { className: "text-sm text-red-600 mb-3", role: "alert" }, galat), React.createElement(Tombol, { className: "w-full", onClick: kirimForm, disabled: sinkron }, sinkron ? React.createElement(React.Fragment, null, React.createElement(IkonMemuat, { className: "w-4 h-4 animate-spin" }), "Menyinkronkan…") : "Konfirmasi Peminjaman & Sinkronkan ke Google Kalender"))));
+}

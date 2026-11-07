@@ -1,0 +1,21 @@
+// Ikon (SVG), logo, dan hook React
+const { useState, useEffect, useRef } = React;
+const buatIkon = (p) => ({ className = "w-4 h-4" }) => React.createElement("svg", { className, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true" }, p);
+const IkonRumah = buatIkon(React.createElement("path", { d: "M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" }));
+const IkonKalender = buatIkon(React.createElement(React.Fragment, null, React.createElement("rect", { x: "3", y: "4", width: "18", height: "18", rx: "2" }), React.createElement("path", { d: "M16 2v4M8 2v4M3 10h18" })));
+const IkonPindai = buatIkon(React.createElement("path", { d: "M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10" }));
+const IkonRobot = buatIkon(React.createElement(React.Fragment, null, React.createElement("rect", { x: "3", y: "11", width: "18", height: "10", rx: "2" }), React.createElement("circle", { cx: "12", cy: "5", r: "2" }), React.createElement("path", { d: "M12 7v4M8 16h.01M16 16h.01" })));
+const IkonDokumen = buatIkon(React.createElement("path", { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8" }));
+const IkonGedung = buatIkon(React.createElement(React.Fragment, null, React.createElement("rect", { x: "4", y: "2", width: "16", height: "20", rx: "2" }), React.createElement("path", { d: "M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01" })));
+const IkonPeringatan = buatIkon(React.createElement("path", { d: "M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01" }));
+const IkonLonceng = buatIkon(React.createElement("path", { d: "M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0" }));
+const IkonKlip = buatIkon(React.createElement("path", { d: "M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" }));
+const IkonKirim = buatIkon(React.createElement("path", { d: "M22 2L11 13M22 2l-7 20-4-9-9-4z" }));
+const IkonCari = buatIkon(React.createElement(React.Fragment, null, React.createElement("circle", { cx: "11", cy: "11", r: "8" }), React.createElement("path", { d: "M21 21l-4.3-4.3" })));
+const IkonUnggah = buatIkon(React.createElement("path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" }));
+const IkonMemuat = buatIkon(React.createElement("path", { d: "M21 12a9 9 0 1 1-6.2-8.6" }));
+const IkonLabu = buatIkon(React.createElement("path", { d: "M10 2v7.3L4.5 19a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 9.3V2M8.5 2h7" }));
+const IkonKiri = buatIkon(React.createElement("path", { d: "M15 18l-6-6 6-6" }));
+const IkonKanan = buatIkon(React.createElement("path", { d: "M9 18l6-6-6-6" }));
+const IkonKeluar = buatIkon(React.createElement("path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" }));
+const Logo = ({ big }) => React.createElement("div", { className: "flex items-center gap-2" }, React.createElement("svg", { width: big ? 44 : 30, height: big ? 44 : 30, viewBox: "0 0 40 40", "aria-hidden": "true" }, React.createElement("path", { d: "M30 9H17a7 7 0 0 0 0 14h6a7 7 0 0 1 0 14H8", fill: "none", stroke: "#1d4ed8", strokeWidth: "8", strokeLinecap: "round" }), React.createElement("path", { d: "M30 9H17a7 7 0 0 0-5 2", fill: "none", stroke: "#60a5fa", strokeWidth: "8", strokeLinecap: "round", opacity: ".6" })), React.createElement("span", { className: `${big ? "text-3xl" : "text-xl"} font-bold tracking-tight text-blue-600` }, "SmartLab AI"));
