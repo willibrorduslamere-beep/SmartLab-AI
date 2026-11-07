@@ -4,3 +4,11 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:#fff;font-family:Inter,Roboto,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#0f172a}
 @keyframes pindai{from{top:4%}to{top:94%}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+/* Layar pembuka: animasi muncul, bilah pemuatan, dan hilang */
+@keyframes muncul{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes isi{from{width:0}to{width:100%}}
+@keyframes hilang{from{opacity:1}to{opacity:0}}
+.pembuka-muncul{animation:muncul .8s ease-out both}
+.pembuka-bilah{animation:isi 2.3s ease-in-out forwards}
+.pembuka-hilang{animation:hilang .4s ease-in forwards}

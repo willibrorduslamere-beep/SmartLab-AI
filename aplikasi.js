@@ -2,6 +2,14 @@
 const HALAMAN = { dash: Beranda, book: Pemesanan, inv: Inventaris, ai: AsistenAI, dmg: Kerusakan };
 function Aplikasi() {
   const [sudahMasuk, aturSudahMasuk] = useState(false);
+  const [pembuka, aturPembuka] = useState("tampil");
+  useEffect(() => {
+    const a = setTimeout(() => aturPembuka("keluar"), 2600), b = setTimeout(() => aturPembuka("selesai"), 3e3);
+    return () => {
+      clearTimeout(a);
+      clearTimeout(b);
+    };
+  }, []);
   const [menuAktif, aturMenuAktif] = useState("dash");
   const [praPilih, aturPraPilih] = useState("");
   const [notifikasi, aturNotifikasi] = useState("");
@@ -68,7 +76,7 @@ function Aplikasi() {
     majukanStatus: (id) => aturLaporanRusak((p) => p.map((x) => x.id === id ? { ...x, status: x.status === "Dalam Peninjauan" ? "Dalam Perbaikan" : "Selesai" } : x))
   };
   const S = HALAMAN[menuAktif];
-  return React.createElement(React.Fragment, null, !sudahMasuk ? React.createElement("div", { className: "min-h-screen" }, React.createElement(HalamanMasuk, { onLogin: () => {
+  return React.createElement(React.Fragment, null, pembuka !== "selesai" && React.createElement(HalamanPembuka, { keluar: pembuka === "keluar" }), !sudahMasuk ? React.createElement("div", { className: "min-h-screen" }, React.createElement(HalamanMasuk, { onLogin: () => {
     aturSudahMasuk(true);
     aturMenuAktif("dash");
   } })) : React.createElement(Kerangka, { menuAktif, nav: (k) => k === "book" ? c.bukaPemesanan(praPilih) : aturMenuAktif(k), onLogout: () => aturSudahMasuk(false) }, React.createElement(S, { key: menuAktif, c })), notifikasi && React.createElement("div", { role: "status", className: "fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-blue-600 text-white text-sm rounded-lg px-4 py-2 shadow-lg max-w-[90vw] text-center" }, notifikasi));
