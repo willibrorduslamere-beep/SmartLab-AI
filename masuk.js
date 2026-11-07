@@ -29,5 +29,5 @@ function HalamanMasuk({ onLogin, onOverview }) {
       const [y, m, d] = v.split("-");
       aturTglLahir(`${d}/${m}/${y}`);
     }
-  } })))), galat && React.createElement("p", { className: "text-sm text-red-600 mb-3", role: "alert" }, galat), React.createElement(Tombol, { type: "submit", className: "w-full py-2.5", disabled: peran !== "Mahasiswa" }, "Masuk ke SmartLab AI"), React.createElement("p", { className: "text-xs text-slate-500 text-center mt-4" }, "Lupa NIM atau kendala akses? Hubungi Admin Lab"))), React.createElement("p", { className: "mt-4 text-xs text-slate-400" }, "Versi 3.0"));
+  } })))), galat && React.createElement("p", { className: "text-sm text-red-600 mb-3", role: "alert" }, galat), React.createElement(Tombol, { type: "submit", className: "w-full py-2.5", disabled: peran !== "Mahasiswa" }, "Masuk ke SmartLab AI"), React.createElement("p", { className: "text-xs text-slate-500 text-center mt-4" }, "Lupa NIM atau kendala akses? Hubungi Admin Lab"))), React.createElement("p", { className: "mt-4 text-xs text-slate-400" }, "Versi 3.1"));
 }
