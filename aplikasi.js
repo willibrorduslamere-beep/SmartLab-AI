@@ -57,14 +57,14 @@ function Aplikasi() {
       aturMenuAktif("book");
     },
     simpanPemesanan: (b) => {
-      aturDaftarPesanan((p) => [...p, { ...b, id: Date.sekarang(), milik: true }]);
+      aturDaftarPesanan((p) => [...p, { ...b, id: Date.now(), milik: true }]);
       tampilkanNotifikasi("Peminjaman dikonfirmasi dan disinkronkan ke Google Kalender");
     },
     sinkronSemua: () => {
       const n = daftarPesanan.filter((b) => b.milik).length;
       tampilkanNotifikasi(n ? `${n} peminjaman Anda disinkronkan ke Google Kalender` : "Belum ada peminjaman untuk disinkronkan");
     },
-    tambahLaporan: (r) => aturLaporanRusak((p) => [{ ...r, id: Date.sekarang(), status: "Dalam Peninjauan", milik: true }, ...p]),
+    tambahLaporan: (r) => aturLaporanRusak((p) => [{ ...r, id: Date.now(), status: "Dalam Peninjauan", milik: true }, ...p]),
     majukanStatus: (id) => aturLaporanRusak((p) => p.map((x) => x.id === id ? { ...x, status: x.status === "Dalam Peninjauan" ? "Dalam Perbaikan" : "Selesai" } : x))
   };
   const S = HALAMAN[menuAktif];
