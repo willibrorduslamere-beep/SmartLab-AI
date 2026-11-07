@@ -33,4 +33,6 @@ const ALAT = [
 const SUMBER = [...RUANGAN, ...ALAT];
 const namaSumber = (id) => SUMBER.find((r) => r.id === id).name;
 const kelasStatus = { "Tersedia": "bg-green-100 text-green-700", "Sedang Digunakan": "bg-orange-100 text-orange-700", "Pemeliharaan": "bg-gray-200 text-gray-700" };
-const MENU = [["dash", "Beranda", IkonRumah], ["book", "Pemesanan Cerdas", IkonKalender], ["inv", "Inventaris Langsung", IkonPindai], ["ai", "Asisten AI Lab", IkonRobot], ["dmg", "Lapor Kerusakan", IkonDokumen]];
+const MENU_MAHASISWA = [["dash", "Beranda", IkonRumah], ["jadwal", "Jadwal Saya", IkonKalender], ["materi", "Materi", IkonBuku], ["inv", "Inventaris Langsung", IkonPindai], ["ai", "Asisten AI Lab", IkonRobot], ["dmg", "Lapor Kerusakan", IkonDokumen]];
+const MENU_STAF = [["dash", "Beranda", IkonRumah], ["book", "Pemesanan Cerdas", IkonKalender], ["materi", "Kirim Materi", IkonKirim], ["inv", "Inventaris Langsung", IkonPindai], ["ai", "Asisten AI Lab", IkonRobot], ["dmg", "Lapor Kerusakan", IkonDokumen]];
+const menuUntuk = (peran) => peran === "Mahasiswa" ? MENU_MAHASISWA : MENU_STAF;

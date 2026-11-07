@@ -1,0 +1,18 @@
+// Halaman Jadwal Saya (mahasiswa): jadwal praktikum yang diatur asisten dosen dan dosen
+const labelHari = (iso, sekarang) => {
+  const h = isoTanggal(sekarang);
+  return iso === h ? "Hari ini" : iso === isoTanggal(tambahHari(sekarang, 1)) ? "Besok" : urai(iso).toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+};
+function KartuJadwal({ j, c, lampau }) {
+  const s = statusPinjam(j, c.sekarang);
+  const mat = c.materi.filter((m) => m.jadwalId === j.id);
+  const d = urai(j.date);
+  return React.createElement("div", { className: `flex gap-4 rounded-xl border border-slate-200 bg-white p-4 ${lampau ? "opacity-70" : ""}` }, React.createElement("div", { className: "w-14 h-16 shrink-0 rounded-lg bg-blue-50 text-blue-700 text-center flex flex-col justify-center" }, React.createElement("div", { className: "text-xs font-semibold uppercase" }, d.toLocaleDateString("id-ID", { month: "short" })), React.createElement("div", { className: "text-2xl font-bold leading-none" }, d.getDate())), React.createElement("div", { className: "flex-1 min-w-0" }, React.createElement("div", { className: "font-semibold" }, j.kegiatan), React.createElement("div", { className: "mt-1 text-sm text-slate-600 flex flex-wrap gap-x-4 gap-y-1" }, React.createElement("span", { className: "inline-flex items-center gap-1" }, React.createElement(IkonJam, { className: "w-4 h-4" }), nol(j.start), ".00–", nol(j.start + j.dur), ".00"), React.createElement("span", { className: "inline-flex items-center gap-1" }, React.createElement(IkonLokasi, { className: "w-4 h-4" }), namaSumber(j.res)), j.kelas && React.createElement("span", null, j.kelas)), React.createElement("div", { className: "mt-1 text-xs text-slate-500" }, "Diatur oleh ", j.oleh), React.createElement("div", { className: "mt-2 flex flex-wrap items-center gap-3" }, React.createElement(Lencana, { c: s.c }, s.t), mat.length > 0 ? React.createElement("button", { onClick: () => c.bukaMateri(j.id), className: "text-sm font-semibold text-blue-700 hover:underline" }, "Lihat materi (", mat.length, ")") : !lampau && React.createElement("span", { className: "text-xs text-slate-500" }, "Materi belum dikirim"))));
+}
+function JadwalSaya({ c }) {
+  const urut = [...c.jadwal].sort((a, b) => waktuSlot(a.date, a.start) - waktuSlot(b.date, b.start));
+  const akan = urut.filter((j) => waktuSlot(j.date, j.start + j.dur) > c.sekarang);
+  const lewat = urut.filter((j) => !akan.includes(j)).reverse().slice(0, 5);
+  const hari = [...new Set(akan.map((j) => j.date))];
+  return React.createElement("div", null, React.createElement(Judul, { sub: "Jadwal praktikum diatur oleh asisten dosen dan dosen" }, "Jadwal Saya"), akan.length ? React.createElement("div", { className: "space-y-5" }, hari.map((h) => React.createElement("section", { key: h, "aria-label": labelHari(h, c.sekarang) }, React.createElement("h2", { className: "text-sm font-semibold text-slate-600 mb-2" }, labelHari(h, c.sekarang)), React.createElement("div", { className: "space-y-3" }, akan.filter((j) => j.date === h).map((j) => React.createElement(KartuJadwal, { key: j.id, j, c })))))) : React.createElement(Kartu, { className: "p-6 text-sm text-slate-600" }, "Belum ada jadwal. Jadwal akan muncul di sini setelah asisten dosen atau dosen mengaturnya."), lewat.length > 0 && React.createElement("section", { className: "mt-8" }, React.createElement("h2", { className: "text-sm font-semibold text-slate-600 mb-2" }, "Sudah lewat"), React.createElement("div", { className: "space-y-3" }, lewat.map((j) => React.createElement(KartuJadwal, { key: j.id, j, c, lampau: true })))));
+}
