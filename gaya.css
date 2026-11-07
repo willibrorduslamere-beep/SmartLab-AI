@@ -1,0 +1,6 @@
+/* Gaya dasar SmartLab AI (komponen memakai kelas Tailwind dari CDN) */
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#fff;font-family:Inter,Roboto,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#0f172a}
+@keyframes pindai{from{top:4%}to{top:94%}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
